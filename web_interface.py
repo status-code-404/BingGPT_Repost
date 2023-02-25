@@ -2,7 +2,6 @@ from error import *
 from converse import question_interface
 from flask import Flask, abort, request
 from gevent import pywsgi
-import json
 from error import *
 import random
 from mail_remind import send_mail
@@ -52,7 +51,6 @@ def hello():
 @app.route("/key/<string:key>", methods=["GET"])
 def web_question(key):
     file_name = key_trans_file(key)
-    print(key)
     if type(file_name) == Error:
         abort(401)
 
