@@ -2,6 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from error import *
 
+USE_MAIL = True
 # 自己填写
 MAIL_CONF = {
     "self_mail": "",
@@ -16,6 +17,8 @@ MAIL_CONF = {
 
 
 def send_mail(subject: str, text: str):
+    if not USE_MAIL:
+        return
     try:
         handle = smtplib.SMTP(MAIL_CONF["mail_type"]["qq"])
         handle.login(MAIL_CONF["self_mail"], MAIL_CONF["self_smtp_key"])
