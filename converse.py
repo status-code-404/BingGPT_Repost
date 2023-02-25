@@ -92,7 +92,11 @@ class Conversation:
         last_max_answer = ""
         max_answer_len = 0
         # 这一段的逻辑算有些混乱的
+        connect_maintain = 0
         while 1:
+            if connect_maintain >= 13:
+                connect_maintain = 0
+                self.wss_connect.send(WAKE_CONNECTION)
             answer = self.wss_connect.recv()
             if answer == WAKE_CONNECTION:
                 continue
