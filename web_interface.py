@@ -1,5 +1,5 @@
 from error import *
-from converse import question_interface
+from converse import question_interface, conversations_clear
 from flask import Flask, abort, request
 from gevent import pywsgi
 from error import *
@@ -64,8 +64,9 @@ def web_question(key):
             return response.dict()
         return {"response_text": response, "response_code": NO_PROBLEM}
     except:
-        # 就算这里出现error也没能力处理
+    #     # 就算这里出现error也没能力处理
         send_mail("Exception occur", "运行中出现了问题，请及时查看")
+        conversations_clear()
         return {"response_text": "", "response_code": EXCEPTION_OCCUR}
 
 

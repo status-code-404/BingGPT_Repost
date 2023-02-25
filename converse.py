@@ -38,12 +38,13 @@ def build_wss_request_data(traceId, innovationId, conversationId, clientId, conv
 
 
 class Conversation:
-    def __init__(self):
+    def __init__(self, cookie_file_name):
         self.invocation_id = 0
         self.request_param = None
         self.last_use_time = None
         self.wss_header = None
         self.wss_connect = None
+        self.cookie_name = cookie_file_name
 
     def can_use(self):
         if self.request_param is None or self.request_param.get("conversationId") is None:
@@ -106,11 +107,8 @@ class Conversation:
 
             if answer_json.get("type") == 2:
                 break
-            elif answer_json.get("type") == 6:
-                continue
             elif answer_json.get("type") != 1 :
-                self.wss_connect.close()
-                return last_max_answer, Error(WSS_RESPONSE_FORMAT_ERROR, "response data %s"%answer)
+                continue
 
             try:
                 if len(answer_json["arguments"][0]["messages"][0]["text"]) >= max_answer_len:
@@ -124,7 +122,7 @@ class Conversation:
 
     def ask(self, question):
         if self.invocation_id >= ROUND_LIMIT:
-            error = self.init()
+            error = self.init(self.cookie_name)
             if error is not None:
                 return None, error
         return self.get_answer(question)
@@ -136,12 +134,16 @@ def get_conversation(cookie_file_name:str):
     global CONVERSATIONS
     error = None
     if CONVERSATIONS.get(cookie_file_name) is None:
-        CONVERSATIONS[cookie_file_name] = Conversation()
+        CONVERSATIONS[cookie_file_name] = Conversation(cookie_file_name)
     if not CONVERSATIONS[cookie_file_name].can_use():
         error = CONVERSATIONS[cookie_file_name].init(cookie_file_name)
     if error is not None:
         return error
     return CONVERSATIONS[cookie_file_name]
+
+def conversations_clear():
+    global CONVERSATIONS
+    CONVERSATIONS.clear()
 
 def question_interface(cookie_file:str, question: str):
     conversation = get_conversation(cookie_file)
