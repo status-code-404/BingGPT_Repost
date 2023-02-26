@@ -104,8 +104,8 @@ class Conversation:
             if answer == WAKE_CONNECTION:
                 continue
             answer = answer[:-1]
-            # 排除Searching for字段导致最长结果的情况
-            answer = answer.replace("Searching for","").replace("searching for","")
+            # 排除干扰字段导致最长结果的情况
+            answer = answer.replace("Searching the web for","").replace("Generating answers for you","")
             if '''{"type":2,''' in answer:
                 break
             # 尝试转成json, 因为有好几条回复合成一条的没法loads, 所以报错就返回了
