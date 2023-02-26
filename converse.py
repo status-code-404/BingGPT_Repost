@@ -2,6 +2,7 @@ from create_conversation import get_conversation_param, build_header, build_cook
 from error import *
 from random import random
 from base64 import b64encode
+from mail_remind import send_mail
 import re
 import websocket
 import emoji
@@ -152,6 +153,9 @@ def conversations_clear():
 def question_interface(cookie_file:str, question: str):
     conversation = get_conversation(cookie_file)
     answer_raw, error = conversation.ask(question)
+    if answer_raw is None or len(answer_raw) == 0:
+        conversations_clear()
+        return send_mail("更新cookie/headers", "请及时更新你的bing cookie 和 headers")
     # answer_raw = answer_raw.replace("\n","")
     if answer_raw is not None and len(answer_raw) != 0:
         return re.sub("\[\^([0-9]*)\^\]", "", emoji.replace_emoji(answer_raw, replace=""))

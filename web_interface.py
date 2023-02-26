@@ -60,6 +60,8 @@ def web_question(key):
 
     try:
         response = question_interface(file_name, question)
+        if response is None:
+            return Error(COOKIE_REFRESH, "cookie need refresh").dict()
         if type(response) == Error:
             return response.dict()
         return {"response_text": response, "response_code": NO_PROBLEM}
