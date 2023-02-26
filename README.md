@@ -1,5 +1,5 @@
 # BingGPT_Repost
-部署在相关云服务上作为bing中转站，在web_interface有web接口，访问即可获得json格式数据
+可以部署在相关云服务上作为bing中转站，在web_interface有web接口，访问即可获得json格式数据
 
 **需要先有一个在new_bing_list里的账户，然后复制下来cookie直接放在同级目录下即可**
 
