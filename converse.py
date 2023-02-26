@@ -152,6 +152,8 @@ def conversations_clear():
 
 def question_interface(cookie_file:str, question: str):
     conversation = get_conversation(cookie_file)
+    if type(conversation) == Error:
+        return conversation
     answer_raw, error = conversation.ask(question)
     if answer_raw is None or len(answer_raw) == 0:
         conversations_clear()
