@@ -10,8 +10,7 @@ from template import *
 def build_header(header_str: str):
     header_lines = header_str.split("\n")
     header = {}
-    for l in range(len(header_lines)):
-        line = header_lines[l]
+    for line in header_lines:
         if line == "":
             continue
         if line[0] == ":":
@@ -19,11 +18,13 @@ def build_header(header_str: str):
         try:
             [key, value] = line.split(":")
         except:
+            if ":" not in line:
+                continue
             location = re.search(":", line).span()[0]
             key = line[:location]
             value = line[location + 1:]
 
-        if value[1] == " ":
+        if value[0] == " ":
             value = value[1:]
         header[key] = value
     return header

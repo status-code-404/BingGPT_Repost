@@ -58,7 +58,8 @@ def web_question(key):
     if question is None or len(question) == 0:
         return {"response_text": "", "response_code": NO_QUESTION}
 
-    try:
+    # try:
+    if True:
         response = question_interface(file_name, question)
         if response is None:
             return Error(RESPONSE_NONE, "cookie need to be refresh or today question come to limit").dict()
@@ -67,7 +68,8 @@ def web_question(key):
                 abort(401)
             return response.dict()
         return {"response_text": response, "response_code": NO_PROBLEM}
-    except:
+    # except:
+    else:
         #    就算这里出现error也没能力处理
         send_mail("Exception occur", "运行中出现了问题，请及时查看")
         conversations_clear()
