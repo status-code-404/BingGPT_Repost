@@ -155,7 +155,7 @@ def question_interface(cookie_file:str, question: str):
     answer_raw, error = conversation.ask(question)
     if answer_raw is None or len(answer_raw) == 0:
         conversations_clear()
-        return send_mail("更新cookie/headers", "请及时更新你的bing cookie 和 headers")
+        return send_mail("回复为空", "尝试更新cookie 或查看今日提问次数是否到达上限")
     # answer_raw = answer_raw.replace("\n","")
     if answer_raw is not None and len(answer_raw) != 0:
         return re.sub("\[\^([0-9]*)\^\]", "", emoji.replace_emoji(answer_raw, replace=""))
