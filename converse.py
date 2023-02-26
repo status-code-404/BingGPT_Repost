@@ -128,7 +128,7 @@ class Conversation:
 
     def ask(self, question):
         now_time = time.time()
-        if self.invocation_id >= ROUND_LIMIT or now_question_time - self.last_question_time >= ROUND_LIMIT_TIME:
+        if self.invocation_id >= ROUND_LIMIT or now_time - self.last_question_time >= ROUND_LIMIT_TIME:
             error = self.init(self.cookie_name)
             if error is not None:
                 return None, error
