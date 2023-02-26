@@ -93,20 +93,22 @@ class Conversation:
         self.invocation_id += 1
         last_max_answer = ""
         max_answer_len = 0
-        # 这一段的逻辑算有些混乱的
+        # 这个参数主要用来维护连接状态正常的（通过send type 6 查看活性)， 每receiver 10个消息维护一次
         connect_maintain = 0
         while 1:
-            if connect_maintain >= 13:
+            if connect_maintain >= 10:
                 connect_maintain = 0
                 self.wss_connect.send(WAKE_CONNECTION)
             answer = self.wss_connect.recv()
+            # 如果是维持活性的消息就放过
             if answer == WAKE_CONNECTION:
                 continue
             answer = answer[:-1]
-            # 排除Searching for最长结果的情况
+            # 排除Searching for字段导致最长结果的情况
             answer = answer.replace("Searching for","").replace("searching for","")
             if '''{"type":2,''' in answer:
                 break
+            # 尝试转成json, 因为有好几条回复合成一条的没法loads, 所以报错就返回了
             try:
                 answer_json = json.loads(answer)
             except:
@@ -118,6 +120,7 @@ class Conversation:
             elif answer_json.get("type") != 1 :
                 continue
 
+            # 尝试获取最长的回答
             try:
                 if len(answer_json["arguments"][0]["messages"][0]["text"]) >= max_answer_len:
                     last_max_answer = answer_json["arguments"][0]["messages"][0]["text"]
@@ -125,6 +128,7 @@ class Conversation:
             except:
                 continue
 
+        # 返回回答最长的话
         self.wss_connect.close()
         return last_max_answer, None
 

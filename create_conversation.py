@@ -14,23 +14,17 @@ def build_header(header_str: str):
         line = header_lines[l]
         if line == "":
             continue
-        line_add = False
         if line[0] == ":":
             line = line[1:]
-            line_add = True
         try:
             [key, value] = line.split(":")
-            value = value[1:]
         except:
-            split_ = line.split(":")
-            key = split_[0]
-            value = ""
-            for v in split_[1:]:
-                value += v
-                value += ":"
-            value = value[1:-1]
-        if line_add:
-            key = ":" + key
+            location = re.search(":", line).span()[0]
+            key = line[:location]
+            value = line[location + 1:]
+
+        if value[1] == " ":
+            value = value[1:]
         header[key] = value
     return header
 

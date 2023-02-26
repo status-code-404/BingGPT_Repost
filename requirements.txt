@@ -1,0 +1,5 @@
+emoji==2.2.0
+Flask==2.2.3
+gevent==22.10.2
+requests==2.25.1
+websocket_client==1.5.1
