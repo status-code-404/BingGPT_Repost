@@ -46,6 +46,7 @@ class Conversation:
         self.wss_header = None
         self.wss_connect = None
         self.cookie_name = cookie_file_name
+        self.last_question_time = time.time()
 
     def can_use(self):
         if self.request_param is None or self.request_param.get("conversationId") is None:
@@ -126,10 +127,12 @@ class Conversation:
         return last_max_answer, None
 
     def ask(self, question):
-        if self.invocation_id >= ROUND_LIMIT:
+        now_time = time.time()
+        if self.invocation_id >= ROUND_LIMIT or now_question_time - self.last_question_time >= ROUND_LIMIT_TIME:
             error = self.init(self.cookie_name)
             if error is not None:
                 return None, error
+        self.last_question_time = now_time
         return self.get_answer(question)
 
 CONVERSATIONS = {}
