@@ -14,3 +14,5 @@
 **本项目相当一部分学习了<a href ="https://github.com/acheong08/EdgeGPT">EdgeGPT</a>, 第一个逆向的人太强了，给大佬点赞**
 
 后续版本可能将会补齐测试，增加多用户管理和对话流管理等功能
+
+## 详细说明：https://blog.csdn.net/SStringss/article/details/129239242
