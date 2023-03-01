@@ -48,6 +48,9 @@ class Conversation:
         self.cookie_name = cookie_file_name
         self.last_question_time = time.time()
 
+    def get_cookie_file_name(self):
+        return self.cookie_name
+
     def can_use(self):
         if self.request_param is None or self.request_param.get("conversationId") is None:
             return False
@@ -167,6 +170,7 @@ def question_interface(cookie_file:str, question: str):
     if answer_raw is not None and len(answer_raw) != 0:
         return re.sub("\[\^([0-9]*)\^\]", "", emoji.replace_emoji(answer_raw, replace=""))
     elif answer_raw is not None and len(answer_raw) == 0:
+        conversation.init(conversation.get_cookie_file_name())
         return send_mail("回复为空", "尝试更新cookie 或查看今日提问次数是否到达上限")
     return error
 
