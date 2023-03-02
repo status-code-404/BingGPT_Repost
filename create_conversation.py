@@ -47,9 +47,12 @@ def get_conversation_param(cookie_file_name: str, mode: str):
         return cookie_value
     if BALANCE not in cookie_value and PRECISE not in cookie_value and CREATIVE not in cookie_value:
         return send_mail("更新cookie", "此cookie仍处于上一版本，未包含变量cdxtone，需要更新")
-    cookie_value = cookie_value.replace(BALANCE, mode).replace(PRECISE, mode).replace(CREATIVE, mode)
+    cookie_value = cookie_value.replace(BALANCE, mode).replace(PRECISE, mode).replace(CREATIVE, mode).replace("\n", "")
     headers["cookie"] = cookie_value
-    resp = requests.get(CREATE_CHAT_URL, headers=headers)
+    try:
+        resp = requests.get(CREATE_CHAT_URL, headers=headers)
+    except:
+        return Error(REQUEST_EXCEPTION, "the requests with somthing wrong to access %s, maybe the header param or cookie param wrong" % CREATE_CHAT_URL)
     if resp.status_code != 200:
         return Error(REQUEST_EXCEPTION, "Something wrong where try to access %s" % CREATE_CHAT_URL)
     try:
@@ -69,3 +72,4 @@ def get_conversation_param(cookie_file_name: str, mode: str):
         return Error(GET_EVENT_ID, "something wrong with get eventId/ traceId")
     param["traceId"] = trace_id[0]
     return param
+

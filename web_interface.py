@@ -64,7 +64,7 @@ def web_question(key):
     else:
         answer_type = REQUEST_DICT[answer_type]
     try:
-        response = question_interface(file_name, question, answer_type=answer_type)
+        response = question_interface(file_name, question, mode=answer_type)
         if response is None:
             return Error(RESPONSE_NONE, "cookie need to be refresh or today question come to limit").dict()
         if type(response) == Error:
