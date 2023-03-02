@@ -2,7 +2,7 @@ from error import *
 from converse import question_interface, conversations_clear
 from flask import Flask, abort, request
 from gevent import pywsgi
-from template import BALANCE, REQUEST_DICT
+from template import DEFAULT_MODE, REQUEST_DICT
 from error import *
 import random
 from mail_remind import send_mail
@@ -60,7 +60,7 @@ def web_question(key):
         return {"response_text": "", "response_code": NO_QUESTION}
     answer_type = request.args.get("type")
     if answer_type is None or answer_type not in REQUEST_DICT:
-        answer_type = BALANCE
+        answer_type = DEFAULT_MODE
     else:
         answer_type = REQUEST_DICT[answer_type]
     try:

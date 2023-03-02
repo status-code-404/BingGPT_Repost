@@ -148,7 +148,7 @@ class Conversation:
 CONVERSATIONS = {}
 
 
-def get_conversation(cookie_file_name:str, mode = BALANCE):
+def get_conversation(cookie_file_name:str, mode = DEFAULT_MODE):
     global CONVERSATIONS
     error = None
     if CONVERSATIONS.get(cookie_file_name + mode) is None:
@@ -163,7 +163,7 @@ def conversations_clear():
     global CONVERSATIONS
     CONVERSATIONS.clear()
 
-def question_interface(cookie_file:str, question: str, mode = BALANCE):
+def question_interface(cookie_file:str, question: str, mode = DEFAULT_MODE):
     conversation = get_conversation(cookie_file, mode)
     if type(conversation) == Error:
         return conversation

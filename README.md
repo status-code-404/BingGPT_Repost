@@ -15,4 +15,10 @@
 
 后续版本可能将会补齐测试，增加多用户管理和对话流管理等功能
 
+
+## 2023.03.02更新
+
+支持bing的三种模式：Creative, Balance, Precise, 请求默认使用Balance, 请求时加上type=creative, type=precise访问另两种模式
+其中默认使用Balance可在template.py的DEFAULT_MODE中设置
+
 ## 详细说明：https://blog.csdn.net/SStringss/article/details/129239242
