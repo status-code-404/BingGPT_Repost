@@ -12,7 +12,6 @@ def replace_invaild_first_character(str_: str):
     return str_
 
 
-# 这里所有的[1:]（包括后面的cookie返回） 都是因为直接复制的值开头它是空格，是违规标志
 def build_header(header_str: str):
     header_lines = header_str.split("\n")
     header = {}

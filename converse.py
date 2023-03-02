@@ -17,10 +17,6 @@ def get_time_stamp():
     time_str = str(datetime.now())
     return  time_str[:10] + "T" + time_str[11:19] + "+08:00"
 
-def build_wss_secret_key():
-    key = b64encode(str(random()).encode("utf8")).decode()
-    return key
-
 def build_wss_request_data(traceId, innovationId, conversationId, clientId, conversationSignature, question):
     try:
         request_data = json.loads(ARGUMENT_TEMPLATE)
