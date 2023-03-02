@@ -2,6 +2,7 @@ from error import *
 from converse import question_interface, conversations_clear
 from flask import Flask, abort, request
 from gevent import pywsgi
+from template import BALANCE, REQUEST_DICT
 from error import *
 import random
 from mail_remind import send_mail
@@ -57,9 +58,14 @@ def web_question(key):
     question = request.args.get("question")
     if question is None or len(question) == 0:
         return {"response_text": "", "response_code": NO_QUESTION}
-
+    answer_type = request.args.get("type")
+    print(question, answer_type)
+    if answer_type is None or answer_type not in REQUEST_DICT:
+        answer_type = BALANCE
+    else:
+        answer_type = REQUEST_DICT[answer_type]
     try:
-        response = question_interface(file_name, question)
+        response = question_interface(file_name, question, answer_type=answer_type)
         if response is None:
             return Error(RESPONSE_NONE, "cookie need to be refresh or today question come to limit").dict()
         if type(response) == Error:

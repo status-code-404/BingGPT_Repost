@@ -39,7 +39,7 @@ def build_wss_request_data(traceId, innovationId, conversationId, clientId, conv
 
 
 class Conversation:
-    def __init__(self, cookie_file_name):
+    def __init__(self, cookie_file_name, mode):
         self.invocation_id = 0
         self.request_param = None
         self.last_use_time = None
@@ -47,6 +47,7 @@ class Conversation:
         self.wss_connect = None
         self.cookie_name = cookie_file_name
         self.last_question_time = time.time()
+        self.mode = mode
 
     def get_cookie_file_name(self):
         return self.cookie_name
@@ -58,7 +59,7 @@ class Conversation:
 
     def init(self, cookie_file_name):
         self.invocation_id = 0
-        self.request_param = get_conversation_param(cookie_file_name)
+        self.request_param = get_conversation_param(cookie_file_name, self.mode)
         if type(self.request_param) == Error:
             return self.request_param
         if self.request_param is None:
@@ -147,23 +148,23 @@ class Conversation:
 CONVERSATIONS = {}
 
 
-def get_conversation(cookie_file_name:str):
+def get_conversation(cookie_file_name:str, mode = BALANCE):
     global CONVERSATIONS
     error = None
-    if CONVERSATIONS.get(cookie_file_name) is None:
-        CONVERSATIONS[cookie_file_name] = Conversation(cookie_file_name)
-    if not CONVERSATIONS[cookie_file_name].can_use():
-        error = CONVERSATIONS[cookie_file_name].init(cookie_file_name)
+    if CONVERSATIONS.get(cookie_file_name + mode) is None:
+        CONVERSATIONS[cookie_file_name  + mode] = Conversation(cookie_file_name, mode)
+    if not CONVERSATIONS[cookie_file_name + mode].can_use():
+        error = CONVERSATIONS[cookie_file_name + mode].init(cookie_file_name)
     if error is not None:
         return error
-    return CONVERSATIONS[cookie_file_name]
+    return CONVERSATIONS[cookie_file_name + mode]
 
 def conversations_clear():
     global CONVERSATIONS
     CONVERSATIONS.clear()
 
-def question_interface(cookie_file:str, question: str):
-    conversation = get_conversation(cookie_file)
+def question_interface(cookie_file:str, question: str, mode = BALANCE):
+    conversation = get_conversation(cookie_file, mode)
     if type(conversation) == Error:
         return conversation
     answer_raw, error = conversation.ask(question)
@@ -171,7 +172,7 @@ def question_interface(cookie_file:str, question: str):
         return re.sub("\[\^([0-9]*)\^\]", "", emoji.replace_emoji(answer_raw, replace=""))
     elif answer_raw is not None and len(answer_raw) == 0:
         conversation.init(conversation.get_cookie_file_name())
-        return send_mail("回复为空", "尝试更新cookie 或查看今日提问次数是否到达上限")
+        return send_mail("回复为空", "可能此轮对话已关闭，尝试刷新网页，如依然回复为空，尝试更新cookie 或查看今日提问次数是否到达上限")
     return error
 
 #test

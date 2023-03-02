@@ -93,3 +93,7 @@ ARGUMENT_TEMPLATE = '''
 '''
 END_SET = ""
 WAKE_CONNECTION = '''{"type":6}'''
+CREATIVE = "cdxtone=Creative"
+BALANCE = "cdxtone=Balanced"
+PRECISE = "cdxtone=Precise"
+REQUEST_DICT = {"creative": CREATIVE, "balance": BALANCE, "precise": PRECISE}
