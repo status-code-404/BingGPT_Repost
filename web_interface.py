@@ -59,7 +59,6 @@ def web_question(key):
     if question is None or len(question) == 0:
         return {"response_text": "", "response_code": NO_QUESTION}
     answer_type = request.args.get("type")
-    print(question, answer_type)
     if answer_type is None or answer_type not in REQUEST_DICT:
         answer_type = BALANCE
     else:
