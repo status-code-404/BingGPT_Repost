@@ -31,7 +31,7 @@ user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/5
 x-ms-client-request-id: 9d57c88c-289f-47f1-9945-cd0f2100ba92
 x-ms-useragent: azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32
 '''
-ROUND_LIMIT = 8
+ROUND_LIMIT = 10
 ROUND_LIMIT_TIME = 300  # 每个conversation维持活性5分钟，每提问一次更新一次，五分钟后自动刷新
 CHAT_URL = "wss://sydney.bing.com/sydney/ChatHub"
 CHAT_HEADER = '''
